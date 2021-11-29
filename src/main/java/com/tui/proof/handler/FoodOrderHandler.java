@@ -1,8 +1,8 @@
 package com.tui.proof.handler;
 
-import com.tui.proof.dto.CreateOrderRequestDTO;
-import com.tui.proof.dto.ReadOrderRequestDTO;
-import com.tui.proof.dto.UpdateOrderRequestDTO;
+import com.tui.proof.dto.PostOrderRequestDTO;
+import com.tui.proof.dto.GetOrderRequestDTO;
+import com.tui.proof.dto.PatchOrderRequestDTO;
 import com.tui.proof.service.FoodOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +22,8 @@ public class FoodOrderHandler {
     public Mono<ServerResponse> get (ServerRequest request) {
 
            return request
-                .bodyToMono(ReadOrderRequestDTO.class)
-                .map(dto -> foodOrderService.readOrder(dto))
+                .bodyToMono(GetOrderRequestDTO.class)
+                .map(dto -> foodOrderService.getOrder(dto))
                 .flatMap(data -> ServerResponse.ok().body(BodyInserters.fromValue(data)))
                 .doOnError(e -> log.error(e.toString()))
                 .switchIfEmpty(ServerResponse.notFound().build());
@@ -32,8 +32,8 @@ public class FoodOrderHandler {
 
     public Mono<ServerResponse> post (ServerRequest request){
         return request
-                .bodyToMono(CreateOrderRequestDTO.class)
-                .map(dto -> foodOrderService.createOrder(dto))
+                .bodyToMono(PostOrderRequestDTO.class)
+                .map(dto -> foodOrderService.postOrder(dto))
                 .flatMap(data -> ServerResponse.ok().body(BodyInserters.fromValue(data)))
                 .doOnError(e -> log.error(e.toString()))
                 .switchIfEmpty(ServerResponse.notFound().build());
@@ -41,8 +41,8 @@ public class FoodOrderHandler {
 
     public Mono<ServerResponse> update (ServerRequest request){
         return request
-                .bodyToMono(UpdateOrderRequestDTO.class)
-                .map(dto -> foodOrderService.updateOrder(dto))
+                .bodyToMono(PatchOrderRequestDTO.class)
+                .map(dto -> foodOrderService.patchOrder(dto))
                 .flatMap(data -> ServerResponse.ok().body(BodyInserters.fromValue(data)))
                 .doOnError(e -> log.error(e.toString()))
                 .switchIfEmpty(ServerResponse.notFound().build());

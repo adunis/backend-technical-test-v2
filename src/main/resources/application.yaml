@@ -14,3 +14,7 @@ server:
 item-price: 1.33
 minuteTimeLimitForUpdatingOrder: 5
 accepted-order-quantities: 5, 10, 15
+
+springdoc:
+  swagger-ui:
+    path : /v3/api-docs/ui

@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateOrderRequestDTO {
+public class PatchOrderRequestDTO {
     private Integer orderId;
     private Integer orderQuantity;
     @Size(max=32,message="first name name too long")

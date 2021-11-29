@@ -1,9 +1,9 @@
 package com.tui.proof.service;
 
-import com.tui.proof.dto.CreateOrderRequestDTO;
+import com.tui.proof.dto.PostOrderRequestDTO;
 import com.tui.proof.dto.OrderResponseDTO;
-import com.tui.proof.dto.ReadOrderRequestDTO;
-import com.tui.proof.dto.UpdateOrderRequestDTO;
+import com.tui.proof.dto.GetOrderRequestDTO;
+import com.tui.proof.dto.PatchOrderRequestDTO;
 import com.tui.proof.entity.client.FoodClient;
 import com.tui.proof.entity.order.FoodOrder;
 import com.tui.proof.mapper.FoodOrderMapper;
@@ -42,7 +42,7 @@ public class FoodOrderService {
     private final FoodOrderMapper clientMapper;
 
 
-    public OrderResponseDTO createOrder(@Valid CreateOrderRequestDTO dto) {
+    public OrderResponseDTO postOrder(@Valid PostOrderRequestDTO dto) {
 
         if (!acceptedOrderQuantities.contains(dto.getOrderQuantity()) ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order value not accepted, only: " + acceptedOrderQuantities.toString());
 
@@ -77,7 +77,7 @@ public class FoodOrderService {
         }
 
 
-    private FoodClient getClientThatMadeTheOrder(CreateOrderRequestDTO dto) {
+    private FoodClient getClientThatMadeTheOrder(PostOrderRequestDTO dto) {
         FoodClient foodClientThatMadeTheOrder = null;
         Optional<FoodClient> clientOpt = foodClientRepository.findByFirstNameAndLastNameAndPhoneNumber(dto.getClientFirstName(), dto.getClientLastName(), dto.getClientPhoneNumber());
         if (clientOpt.isEmpty()){
@@ -98,7 +98,7 @@ public class FoodOrderService {
 
     }
 
-    public OrderResponseDTO updateOrder(UpdateOrderRequestDTO dto)  {
+    public OrderResponseDTO patchOrder(PatchOrderRequestDTO dto)  {
 
        Optional<FoodOrder> orderToUpdateOpt = foodOrderRepository.findById(dto.getOrderId());
        if (orderToUpdateOpt.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order does not exist");
@@ -129,7 +129,7 @@ public class FoodOrderService {
                 .build();
     }
 
-    public OrderResponseDTO readOrder(ReadOrderRequestDTO dto) {
+    public OrderResponseDTO getOrder(GetOrderRequestDTO dto) {
 
         List<FoodClient> clientsFound = foodClientRepository.findByFirstNameIgnoreCaseContainingOrLastNameIgnoreCaseContaining(dto.getClientSearchName(), dto.getClientSearchName());
         OrderResponseDTO result = null;

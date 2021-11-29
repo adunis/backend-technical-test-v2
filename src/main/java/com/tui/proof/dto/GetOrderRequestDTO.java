@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadOrderRequestDTO {
+public class GetOrderRequestDTO {
     @NotBlank
     private String clientSearchName;
 }
