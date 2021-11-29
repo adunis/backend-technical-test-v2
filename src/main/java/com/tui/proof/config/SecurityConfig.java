@@ -21,8 +21,8 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers(HttpMethod.GET, "/**").permitAll()
-                .pathMatchers(HttpMethod.GET, "/api/v1/order").hasAuthority("ROLE_ADMIN")
+                .pathMatchers("/**").permitAll()
+                .pathMatchers(HttpMethod.POST, "/api/v1/search/order").hasAuthority("ROLE_ADMIN")
                 .pathMatchers(HttpMethod.POST, "/api/v1/order").permitAll()
                 .pathMatchers(HttpMethod.PATCH, "/api/v1/order").permitAll()
                 .and()
@@ -44,4 +44,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

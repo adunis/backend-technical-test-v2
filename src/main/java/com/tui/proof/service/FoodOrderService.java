@@ -2,7 +2,7 @@ package com.tui.proof.service;
 
 import com.tui.proof.dto.PostOrderRequestDTO;
 import com.tui.proof.dto.OrderResponseDTO;
-import com.tui.proof.dto.GetOrderRequestDTO;
+import com.tui.proof.dto.SearchOrderRequestDTO;
 import com.tui.proof.dto.PatchOrderRequestDTO;
 import com.tui.proof.entity.client.FoodClient;
 import com.tui.proof.entity.order.FoodOrder;
@@ -129,7 +129,7 @@ public class FoodOrderService {
                 .build();
     }
 
-    public OrderResponseDTO getOrder(GetOrderRequestDTO dto) {
+    public OrderResponseDTO getOrder(SearchOrderRequestDTO dto) {
 
         List<FoodClient> clientsFound = foodClientRepository.findByFirstNameIgnoreCaseContainingOrLastNameIgnoreCaseContaining(dto.getClientSearchName(), dto.getClientSearchName());
         OrderResponseDTO result = null;

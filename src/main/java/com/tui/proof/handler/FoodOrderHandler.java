@@ -1,7 +1,7 @@
 package com.tui.proof.handler;
 
 import com.tui.proof.dto.PostOrderRequestDTO;
-import com.tui.proof.dto.GetOrderRequestDTO;
+import com.tui.proof.dto.SearchOrderRequestDTO;
 import com.tui.proof.dto.PatchOrderRequestDTO;
 import com.tui.proof.service.FoodOrderService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +19,10 @@ public class FoodOrderHandler {
 
     private final FoodOrderService foodOrderService;
 
-    public Mono<ServerResponse> get (ServerRequest request) {
+    public Mono<ServerResponse> search(ServerRequest request) {
 
            return request
-                .bodyToMono(GetOrderRequestDTO.class)
+                .bodyToMono(SearchOrderRequestDTO.class)
                 .map(dto -> foodOrderService.getOrder(dto))
                 .flatMap(data -> ServerResponse.ok().body(BodyInserters.fromValue(data)))
                 .doOnError(e -> log.error(e.toString()))

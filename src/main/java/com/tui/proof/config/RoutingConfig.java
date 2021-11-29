@@ -1,11 +1,13 @@
 package com.tui.proof.config;
 
-import com.tui.proof.dto.GetOrderRequestDTO;
+import com.tui.proof.dto.SearchOrderRequestDTO;
 import com.tui.proof.dto.OrderResponseDTO;
 import com.tui.proof.dto.PatchOrderRequestDTO;
 import com.tui.proof.dto.PostOrderRequestDTO;
 import com.tui.proof.handler.FoodOrderHandler;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -32,24 +34,25 @@ public class RoutingConfig {
     private final FoodOrderHandler foodOrderHandler;
 
     @RouterOperations({
-            @RouterOperation( path = "/order", method = RequestMethod.PATCH, beanClass =  FoodOrderHandler.class, beanMethod = "update",
-                    operation = @Operation(operationId = "api/v1/user", method="PATCH", summary = "api/v1/user",
+            @RouterOperation( path = "/api/v1/order", method = RequestMethod.PATCH, beanClass =  FoodOrderHandler.class, beanMethod = "update",
+                    operation = @Operation(operationId = "api/v1/order/", method="PATCH", summary = "Update Order",
                     requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = PatchOrderRequestDTO.class))),
                     responses = @ApiResponse(content = @Content(schema = @Schema(implementation = OrderResponseDTO.class))),
                     description = "This method updates order details within 5 minutes of its creation")),
 
-            @RouterOperation(path = "/order", method = RequestMethod.POST, beanClass =  FoodOrderHandler.class, beanMethod = "post",
-                    operation = @Operation(operationId = "api/v1/user", method="PATCH", summary = "api/v1/user",
+            @RouterOperation(path = "/api/v1/order", method = RequestMethod.POST, beanClass =  FoodOrderHandler.class, beanMethod = "post",
+                    operation = @Operation(operationId = "api/v1/order/", method="PATCH", summary = "Create Order",
                     requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = PostOrderRequestDTO.class))),
                     responses = @ApiResponse(content = @Content(schema = @Schema(implementation = OrderResponseDTO.class))),
                     description = "This method creates an order and the client if a new one")),
 
-            @RouterOperation(path = "/order", method = RequestMethod.GET, beanClass =  FoodOrderHandler.class, beanMethod = "get",
-                    operation = @Operation(operationId = "api/v1/user", method="PATCH", summary = "api/v1/order",
-                    security = {@SecurityRequirement(name="basicAuth")},
-                    requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = GetOrderRequestDTO.class))),
+            @RouterOperation(path = "/api/v1/search/order", method = RequestMethod.POST, beanClass =  FoodOrderHandler.class, beanMethod = "search",
+                    operation = @Operation(operationId = "api/v1/order/", method="PATCH", summary = "Search Orders",
+                    parameters = @Parameter(name = "Authorization", in  = ParameterIn.HEADER),
+                    security = {@SecurityRequirement(name="BasicAuthentication")},
+                    requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = SearchOrderRequestDTO.class))),
                     responses = @ApiResponse(content = @Content(schema = @Schema(implementation = OrderResponseDTO.class))),
-                    description = "Finds all orders which customers name contain a certain string"))
+                    description = "Finds all orders which customers name contain a certain string. Requires Basic Authentication. "))
     })
     @Bean
     public RouterFunction<ServerResponse> routes() {
@@ -57,7 +60,7 @@ public class RoutingConfig {
                 .path("/api/v1", builder -> builder
                         .PATCH("/order", foodOrderHandler::update)
                         .POST("/order", foodOrderHandler::post)
-                        .GET("doc", foodOrderHandler::get))
+                        .POST("/search/order", foodOrderHandler::search))
                 .build();
     }
 }
