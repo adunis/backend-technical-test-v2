@@ -5,7 +5,7 @@ API built with Spring-Boot with these endpoints:
 * **Update Order (PATCH /api/v1/order)**: Can modify an order only if a certain amount of minutes have not passed yet since its creation. This variable is defined in the application configuration. 
 * **Search Orders (POST /api/v1/search/order)**: An admin can search orders which clients first name or last name contains a certain input string. Basic Authentication has been implemented for this endpoint and there is only one admin account (username: admin, password: password).  
 
-**Authentication header for Search Order**s: *Basic YWRtaW46cGFzc3dvcmQ*
+**Authentication header for Search Order**s: *Basic YWRtaW46cGFzc3dvcmQ=*
 
 Documentation for input and output DTOs can be found at: http://localhost:8080/v3/api-docs and http://localhost:8080/v3/api-docs/ui
 

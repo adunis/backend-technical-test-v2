@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/**").permitAll()
+                .pathMatchers("/v3/api-docs", "/v3/api-docs/**").permitAll()
                 .pathMatchers(HttpMethod.POST, "/api/v1/search/order").hasAuthority("ROLE_ADMIN")
                 .pathMatchers(HttpMethod.POST, "/api/v1/order").permitAll()
                 .pathMatchers(HttpMethod.PATCH, "/api/v1/order").permitAll()

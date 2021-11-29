@@ -24,9 +24,6 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
-
-//TODO OpenAPI
-
 @Configuration
 @RequiredArgsConstructor
 public class RoutingConfig {
@@ -47,7 +44,7 @@ public class RoutingConfig {
                     description = "This method creates an order and the client if a new one")),
 
             @RouterOperation(path = "/api/v1/search/order", method = RequestMethod.POST, beanClass =  FoodOrderHandler.class, beanMethod = "search",
-                    operation = @Operation(operationId = "api/v1/order/", method="PATCH", summary = "Search Orders",
+                    operation = @Operation(operationId = "/api/v1/search/order/", method="PATCH", summary = "Search Orders",
                     parameters = @Parameter(name = "Authorization", in  = ParameterIn.HEADER),
                     security = {@SecurityRequirement(name="BasicAuthentication")},
                     requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = SearchOrderRequestDTO.class))),
