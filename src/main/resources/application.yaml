@@ -6,10 +6,12 @@ spring:
     driverClassName: org.h2.Driver
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+  main:
+    web-application-type: reactive
 server:
-  error:
-    include-message: always
-    include-stacktrace: never
+ error:
+  include-message: always
+  include-stacktrace: never
 
 item-price: 1.33
 minuteTimeLimitForUpdatingOrder: 5

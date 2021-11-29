@@ -13,6 +13,7 @@ public interface FoodClientRepository extends JpaRepository<FoodClient, Integer>
     List<FoodClient> findByFirstNameIgnoreCaseContainingOrLastNameIgnoreCaseContaining(String name, String surname);
 
     Optional<FoodClient> findByFirstNameAndLastNameAndPhoneNumber(String clientFirstName, String clientLastName, String clientPhoneNumber);
+    Optional<FoodClient> findByFirstName(String firstName);
 }
 
 

@@ -22,9 +22,9 @@ public class FoodClient {
   @Id
   @GeneratedValue(strategy= GenerationType.AUTO)
   private Integer clientId;
-  @NotNull @Size(max=32,message="first name name too long")
+  @NotNull @Size(max=32,message="first name too long")
   private String firstName;
-  @NotNull  @Size(max=32,message="last name name too long")
+  @NotNull  @Size(max=32,message="last name too long")
   private String lastName;
   @NotNull @Pattern(regexp="^\\+[1-9]{1}[0-9]{3,14}$",message="phone number format not correct")
   private String phoneNumber;

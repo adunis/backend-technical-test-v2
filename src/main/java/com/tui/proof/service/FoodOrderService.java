@@ -1,9 +1,9 @@
 package com.tui.proof.service;
 
-import com.tui.proof.dto.PostOrderRequestDTO;
 import com.tui.proof.dto.OrderResponseDTO;
-import com.tui.proof.dto.SearchOrderRequestDTO;
 import com.tui.proof.dto.PatchOrderRequestDTO;
+import com.tui.proof.dto.PostOrderRequestDTO;
+import com.tui.proof.dto.SearchOrderRequestDTO;
 import com.tui.proof.entity.client.FoodClient;
 import com.tui.proof.entity.order.FoodOrder;
 import com.tui.proof.mapper.FoodOrderMapper;
@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -40,7 +41,7 @@ public class FoodOrderService {
     private final FoodOrderRepository foodOrderRepository;
     private final FoodClientRepository foodClientRepository;
     private final FoodOrderMapper clientMapper;
-
+    private final Clock clock;
 
     public OrderResponseDTO postOrder(@Valid PostOrderRequestDTO dto) {
 
@@ -49,7 +50,7 @@ public class FoodOrderService {
         FoodClient foodClientThatMadeTheOrder = getClientThatMadeTheOrder(dto);
 
         FoodOrder foodOrderToSave = FoodOrder.builder()
-                .orderCreationDate(ZonedDateTime.now())
+                .orderCreationDate(ZonedDateTime.now(clock))
                 .orderTotal(round(itemPrice * dto.getOrderQuantity(), 2))
                 .quantityOrdered(dto.getOrderQuantity())
                 .clientId(foodClientThatMadeTheOrder.getClientId())
@@ -68,12 +69,11 @@ public class FoodOrderService {
                 .build();
     }
 
-    private  Double round(double value, int places) {
+    private  Double round(Double value, Integer places) {
             if (places < 0) throw new IllegalArgumentException();
-
-            BigDecimal bd = new BigDecimal(Double.toString(value));
-            bd = bd.setScale(places, RoundingMode.HALF_UP);
-            return bd.doubleValue();
+            BigDecimal bigDecimal = new BigDecimal(Double.toString(value));
+            bigDecimal = bigDecimal.setScale(places, RoundingMode.HALF_UP);
+            return bigDecimal.doubleValue();
         }
 
 
@@ -104,7 +104,7 @@ public class FoodOrderService {
        if (orderToUpdateOpt.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order does not exist");
 
        FoodOrder foodOrderToUpdate = orderToUpdateOpt.get();
-       ZonedDateTime currentDateTime = ZonedDateTime.now();
+       ZonedDateTime currentDateTime = ZonedDateTime.now(clock);
        Duration differenceNowAndOrderCreation = Duration.between(foodOrderToUpdate.getOrderCreationDate(), currentDateTime);
 
        if (differenceNowAndOrderCreation.toMinutes() > minuteTimeLimitForUpdatingOrder) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't update the order anymore after 5 minutes since its creation");
