@@ -1,4 +1,4 @@
-## TUI DX Backend Techincal Test v2 <br> by Aleksandar Petrovic
+## TUI DX Backend Technical Test v2 <br> by Aleksandar Petrovic
 
 API built with Spring-Boot with these endpoints:
 * **Create Order (POST /api/v1/order)**: Creates an order in the database and a client only if it hasn't been created yet. A client is identified by its first name, last name and telephone. For example clients with the same first and last names but diffent phone numbers are possible.
