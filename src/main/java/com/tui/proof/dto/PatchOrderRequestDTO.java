@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 public class PatchOrderRequestDTO {
     private Integer orderId;
     private Integer orderQuantity;
-    @Size(max=32,message="first name name too long")
+    @Size(max=32,message="street name too long")
     private String street;
     @Size(max=32,message="postcode name too long")
     private String postcode;

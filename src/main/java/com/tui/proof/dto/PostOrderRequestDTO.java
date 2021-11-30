@@ -23,7 +23,7 @@ public class PostOrderRequestDTO {
     private String clientLastName;
     @NotBlank @Pattern(regexp="^\\+[1-9]{1}[0-9]{3,14}$",message="phone number format not correct")
     private String clientPhoneNumber;
-    @NotBlank @Size(max=32,message="stree name too long")
+    @NotBlank @Size(max=32,message="street name too long")
     private String street;
     @NotBlank @Size(max=32,message="postcode name too long")
     private String postcode;

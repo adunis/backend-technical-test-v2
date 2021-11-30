@@ -1,9 +1,6 @@
 package com.tui.proof.service;
 
-import com.tui.proof.dto.OrderResponseDTO;
-import com.tui.proof.dto.PatchOrderRequestDTO;
-import com.tui.proof.dto.PostOrderRequestDTO;
-import com.tui.proof.dto.SearchOrderRequestDTO;
+import com.tui.proof.dto.*;
 import com.tui.proof.entity.client.FoodClient;
 import com.tui.proof.entity.order.FoodOrder;
 import com.tui.proof.mapper.FoodOrderMapper;
@@ -22,6 +19,7 @@ import java.math.RoundingMode;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -132,18 +130,14 @@ public class FoodOrderService {
     public OrderResponseDTO getOrder(SearchOrderRequestDTO dto) {
 
         List<FoodClient> clientsFound = foodClientRepository.findByFirstNameIgnoreCaseContainingOrLastNameIgnoreCaseContaining(dto.getClientSearchName(), dto.getClientSearchName());
-        OrderResponseDTO result = null;
+        OrderResponseDTO result = OrderResponseDTO.builder().orderResponseData(new ArrayList<>()).build();
 
         if (clientsFound.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No clients found");
 
         for (FoodClient client : clientsFound) {
             List<FoodOrder> ordersOpt = foodOrderRepository.findAllByClientId(client.getClientId());
-            result =  OrderResponseDTO.builder()
-                    .orderResponseData(ordersOpt
-                            .stream()
-                            .map(x -> clientMapper.orderAndClientToOrderResponseData(x, client))
-                            .collect(Collectors.toList()))
-                    .build();
+            List<OrderResponseData> ordersResult = ordersOpt.stream().map(x -> clientMapper.orderAndClientToOrderResponseData(x, client)).collect(Collectors.toList());
+            result.getOrderResponseData().addAll(ordersResult);
         }
 
         return result;
