@@ -38,13 +38,13 @@ public class RoutingConfig {
                     description = "This method updates order details within 5 minutes of its creation")),
 
             @RouterOperation(path = "/api/v1/order", method = RequestMethod.POST, beanClass =  FoodOrderHandler.class, beanMethod = "post",
-                    operation = @Operation(operationId = "api/v1/order/", method="PATCH", summary = "Create Order",
+                    operation = @Operation(operationId = "api/v1/order/", method="POST", summary = "Create Order",
                     requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = PostOrderRequestDTO.class))),
                     responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = OrderResponseDTO.class))),
                     description = "This method creates an order and the client if a new one")),
 
             @RouterOperation(path = "/api/v1/search/order", method = RequestMethod.POST, beanClass =  FoodOrderHandler.class, beanMethod = "search",
-                    operation = @Operation(operationId = "/api/v1/search/order/", method="PATCH", summary = "Search Orders",
+                    operation = @Operation(operationId = "/api/v1/search/order/", method="POST", summary = "Search Orders",
                     parameters = @Parameter(name = "Authorization", in  = ParameterIn.HEADER),
                     security = {@SecurityRequirement(name="BasicAuthentication")},
                     requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = SearchOrderRequestDTO.class))),
@@ -56,8 +56,8 @@ public class RoutingConfig {
         return route()
                 .path("/api/v1", builder -> builder
                         .PATCH("/order", foodOrderHandler::update)
-                        .POST("/order", foodOrderHandler::post))
-                        .POST("/search/order", foodOrderHandler::search)
+                        .POST("/order", foodOrderHandler::post)
+                        .POST("/search/order", foodOrderHandler::search))
                 .build();
     }
 }
