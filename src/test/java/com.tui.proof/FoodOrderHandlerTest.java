@@ -25,6 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.reactive.function.server.HandlerStrategies;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.test.StepVerifier;
 
 import java.time.Clock;
@@ -87,6 +88,24 @@ public class FoodOrderHandlerTest {
                 .verify();
     }
 
+
+    @Test public void searchTest_not_found_ko(){
+
+        MockServerWebExchange exchange = MockServerWebExchange
+                .from(MockServerHttpRequest.post("/api/v1/search/order")
+                        .header("Authorization", "Basic YWRtaW46cGFzc3dvcmQ=")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(gson.toJson(SearchOrderRequestDTO.builder()
+                                .clientSearchName("searchTestKoNotFound")
+                                .build())));
+
+        ServerRequest serverRequest = ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
+
+        StepVerifier.create(
+                        foodOrderHandler.search(serverRequest))
+                .expectError(ResponseStatusException.class)
+                .verify();
+    }
 
     @Test public void postTest_ok() {
 
