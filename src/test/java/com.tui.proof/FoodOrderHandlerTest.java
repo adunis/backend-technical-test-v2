@@ -48,6 +48,7 @@ public class FoodOrderHandlerTest {
     FoodOrderRepository foodOrderRepository;
     @Autowired
     FoodClientRepository foodClientRepository;
+    @Autowired Gson gson;
 
     @MockBean
     Clock clock;
@@ -62,11 +63,9 @@ public class FoodOrderHandlerTest {
 
         FoodClient clientToSave = buildFoodClient("searchHandlerTest");
         FoodClient foodClientSaved = foodClientRepository.save(clientToSave);
-        FoodOrder foodOrderToSave = buildFoodOrder(foodClientSaved, FoodOrder.builder().city("test"), ZonedDateTime.now(clock));
+        FoodOrder foodOrderToSave = buildFoodOrder(foodClientSaved, FoodOrder.builder().city("searchHandlerTest"), ZonedDateTime.now(clock));
         FoodOrder foodOrderSaved = foodOrderRepository.save(foodOrderToSave);
         when(clock.instant()).thenReturn(Instant.parse("2021-12-01T10:02:00.653Z"));
-
-        Gson gson = new Gson();
 
         MockServerWebExchange exchange = MockServerWebExchange
                 .from(MockServerHttpRequest.post("/api/v1/search/order")
@@ -88,9 +87,8 @@ public class FoodOrderHandlerTest {
                 .verify();
     }
 
-    @Test public void postTest_ok() {
 
-        Gson gson = new Gson();
+    @Test public void postTest_ok() {
 
         MockServerWebExchange exchange = MockServerWebExchange
                 .from(MockServerHttpRequest.post("/api/v1/order")
@@ -126,8 +124,6 @@ public class FoodOrderHandlerTest {
         FoodOrder foodOrderToSave = buildFoodOrder(foodClientSaved, FoodOrder.builder().city("test"), ZonedDateTime.now(clock));
         FoodOrder foodOrderSaved = foodOrderRepository.save(foodOrderToSave);
         when(clock.instant()).thenReturn(Instant.parse("2021-12-01T10:02:00.653Z"));
-
-        Gson gson = new Gson();
 
         MockServerWebExchange exchange = MockServerWebExchange
                 .from(MockServerHttpRequest.patch("/api/v1/order")
